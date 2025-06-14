@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Web Project</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            body {
+                font-size: 16px;
+            }
+        }
+
+        /* Quiz Section */
+        .quiz-container {
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 300px;
+            margin: auto;
+            border-radius: 8px;
+        }
+
+        /* Image Carousel */
+        .carousel-container {
+            width: 300px;
+            margin: auto;
+            position: relative;
+        }
+
+        .carousel img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .carousel button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .prev { left: 0; }
+        .next { right: 0; }
+
+        /* API Data */
+        .api-container {
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 300px;
+            margin: auto;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Responsive Web Project</h2>
+
+    <!-- Quiz Section -->
+    <div class="quiz-container">
+        <h3>Quiz</h3>
+        <p id="question">What is the capital of France?</p>
+        <button onclick="checkAnswer('Paris')">Paris</button>
+        <button onclick="checkAnswer('London')">London</button>
+        <button onclick="checkAnswer('Berlin')">Berlin</button>
+        <p id="result"></p>
+    </div>
+
+    <!-- Image Carousel -->
+    <div class="carousel-container">
+        <h3>Image Carousel</h3>
+        <button class="prev" onclick="prevImage()">&#10094;</button>
+        <img id="carouselImage" src="https://source.unsplash.com/random/300x200">
+        <button class="next" onclick="nextImage()">&#10095;</button>
+    </div>
+
+    <!-- API Data -->
+    <div class="api-container">
+        <h3>Weather Info</h3>
+        <button onclick="fetchWeather()">Get Weather</button>
+        <p id="weatherData"></p>
+    </div>
+
+    <script>
+        // Quiz Functionality
+        function checkAnswer(answer) {
+            let result = document.getElementById("result");
+            if (answer === "Paris") {
+                result.textContent = "Correct!";
+                result.style.color = "green";
+            } else {
+                result.textContent = "Wrong! Try again.";
+                result.style.color = "red";
+            }
+        }
+
+        // Image Carousel Functionality
+        let images = [
+            "https://source.unsplash.com/random/300x200?1",
+            "https://source.unsplash.com/random/300x200?2",
+            "https://source.unsplash.com/random/300x200?3"
+        ];
+        let index = 0;
+
+        function nextImage() {
+            index = (index + 1) % images.length;
+            document.getElementById("carouselImage").src = images[index];
+        }
+
+        function prevImage() {
+            index = (index - 1 + images.length) % images.length;
+            document.getElementById("carouselImage").src = images[index];
+        }
+
+        // Fetch Data from a Public API (Weather Example)
+        function fetchWeather() {
+            fetch("https://api.open-meteo.com/v1/forecast?latitude=48.8566&longitude=2.3522&current_weather=true")
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("weatherData").textContent = "Temperature: " + data.current_weather.temperature + "°C";
+                })
+                .catch(error => console.error("Error fetching weather data:", error));
+        }
+    </script>
+
+</body>
+</html>
